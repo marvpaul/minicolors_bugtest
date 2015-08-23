@@ -1,0 +1,7 @@
+<h1>Minicolors#test</h1>
+<p>Find me in app/views/minicolors/test.html.erb</p>
+
+<%= simple_form_for @ein_text do |f| %>
+  <%= f.input :farbe, as: :minicolors %>
+  <font color="#<%= @ein_text.farbe %>"> <%=h @ein_text.text %> </font>
+<% end %>

@@ -1,0 +1,93 @@
+//document.body.childNodes[17].firstChild.textContent = ("<>%= @highchart.series_data[0][:data].inspect %>");
+//neu_json = '<%=raw @highchart.series_data.to_json %>';
+//neu_json = '<%=raw @highchart.to_json %>';
+//alert(neu_json);
+//$("#fehlerausgabe_div").html(" <b>ok" +  "</b>");// json: " + neu_json);
+/*
+try{
+  <%= raw high_chart("div_diagramm_neu", @highchart).gsub(/<[^<>]+>/,'') %>
+    chart_quelle = window.chart_div_diagramm_neu;
+    document.getElementById('div_diagramm_neu').style.visibility = 'hidden'; 
+    //alert( $("#div_diagramm_neu" ) );
+    //.style.visibility = 'hidden'; 
+    chart_ziel = window.chart_div_diagramm;
+    chart_ziel.series[0].setData(chart_quelle.series[0].yData, true);
+
+    //chart_ziel.series[0].pointStart = chart_quelle.series[0].pointStart, true);
+//  neue_daten = JSON.parse( neu_json );
+} catch(e) {
+  alert(e);
+  $("#fehlerausgabe_div").html("Fehler: <b>" + e + "</b>");
+}
+*/
+//chart = window.chart_div_diagramm;
+/*
+try {
+  for (index = 0; index < neue_daten.length; index++) {
+    //chart.series[index].setData(neue_daten[index]["data"], false);
+    window.chart_div_diagramm = new HighCharts.Chart( neue_daten );
+  }    
+} catch(e) {
+  $("#fehlerausgabe_div").html("Fehler beim Ersetzen: <b>" + e + "</b> json: " + neu_json);	
+}
+*/
+//window.chart_div_diagramm.redraw();
+//chart.redraw();
+
+try {
+  $("#aktuelle_zeit").html("<%= j(render('aktuelle_zeit')) %>");
+} catch(e) {
+  $("#fehlerausgabe_div").html("Fehler beim Zeit-Aktualisieren: <b>" + e + "</b>");
+}
+
+try{
+    json_obj = '<%=  erg=(@highchart.to_json); raw(erg) %>';
+    neue_daten = JSON.parse( json_obj );
+    chart_ziel = window.chart_div_diagramm;
+    var len_anfang = chart_ziel.series.length;
+    if (neue_daten.options.y_axis.length < chart_ziel.yAxis.length){
+      chart_ziel.yAxis[chart_ziel.yAxis.length-1].remove();
+    }
+    if (neue_daten.options.y_axis.length > chart_ziel.yAxis.length){
+      chart_ziel.addAxis({}, false); //keine xAchse
+    }
+    for (var i = 0; i < neue_daten.options.y_axis.length; i++) {
+      chart_ziel.yAxis[i].update({
+        labels:     neue_daten.options.y_axis[i].labels,
+        min:        neue_daten.options.y_axis[i].min,
+        max:        neue_daten.options.y_axis[i].max,
+        title:      neue_daten.options.y_axis[i].title,
+        opposite:   neue_daten.options.y_axis[i].opposite
+      }, false);
+    }
+    var len_vorher = chart_ziel.series.length;
+    if (neue_daten.series_data.length < chart_ziel.series.length){
+      chart_ziel.series[chart_ziel.series.length-1].remove();
+    }
+    while (neue_daten.series_data.length > chart_ziel.series.length){
+      chart_ziel.addSeries({});
+    }
+    var len_nachher = chart_ziel.series.length;
+    //$("#debugausgabe_series_div").html("Linie: <b>" + JSON.stringify(neue_daten) + "</b>");
+    //$("#kurz_debug_div").html("<b> a:" + len_anfang + "  v:" + len_vorher + " n: " + len_nachher + "</b>");
+    for (var i = 0; i < neue_daten.series_data.length; i++) {
+      //$("#kurz_debug_div").append( "<br> i: " + i +  " l: " + chart_ziel.series.length + "");
+      chart_ziel.series[i].update({
+        data:         neue_daten.series_data[i]["data"],
+        pointStart:   neue_daten.series_data[i].point_start,
+        pointInterval:   neue_daten.series_data[i].point_interval,
+        color:        neue_daten.series_data[i].color,
+        name:         neue_daten.series_data[i].name,
+        yAxis:        neue_daten.series_data[i].y_axis
+      }, false);
+      
+    }
+    chart_ziel.redraw();
+} catch(e) {
+  alert(e);
+  $("#fehlerausgabe_div").html("Fehler: <b>" + e + "</b>");
+}
+
+
+
+  

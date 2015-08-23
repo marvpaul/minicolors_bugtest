@@ -1,0 +1,25 @@
+<h1>Listing ein_texts</h1>
+
+<table>
+  <tr>
+    <th>Text</th>
+    <th>Farbe</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @ein_texts.each do |ein_text| %>
+  <tr>
+    <td><%= ein_text.text %></td>
+    <td><%= ein_text.farbe %></td>
+    <td><%= link_to 'Show', ein_text %></td>
+    <td><%= link_to 'Edit', edit_ein_text_path(ein_text) %></td>
+    <td><%= link_to 'Destroy', ein_text, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Ein text', new_ein_text_path %>

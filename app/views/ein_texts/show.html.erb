@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Text:</b>
+  <%= @ein_text.text %>
+</p>
+
+<p>
+  <b>Farbe:</b>
+  <%= @ein_text.farbe %>
+</p>
+
+
+<%= link_to 'Edit', edit_ein_text_path(@ein_text) %> |
+<%= link_to 'Back', ein_texts_path %>
